@@ -54,7 +54,7 @@ module.exports = {
   },
   getUserByUserId: (id, callBack) => {
     pool.query(
-      `select id,firstName,lastName,gender,email,number from user where id = ?`,
+      `select id,firstName,lastName,gender,email,number,token from user where id = ?`,
       [id],
       (error, results, fields) => {
         if (error) {
@@ -66,7 +66,7 @@ module.exports = {
   },
   getUsers: callBack => {
     pool.query(
-      `select id,firstName,lastName,gender,email,number from user`,
+      `select id,firstName,lastName,gender,email,number,token from user`,
       [],
       (error, results, fields) => {
         if (error) {
@@ -77,15 +77,12 @@ module.exports = {
     );
   },
   updateUser: (data, callBack) => {
-      console.log(data.firstName,
-        data.lastName,
-        data.gender,
-        data.email,
-        data.password,
-        data.number,
-        data.id)
+    if(!data.token){
+      data.token ="";
+    }
+    
     pool.query(
-      `update user set firstName=?, lastName=?, gender=?, email=?, password=?, number=? where id = ?`,
+      `update user set firstName=?, lastName=?, gender=?, email=?, password=?, number=?, token=? where id = ?`,
       [
         data.firstName,
         data.lastName,
@@ -93,7 +90,8 @@ module.exports = {
         data.email,
         data.password,
         data.number,
-        data.id
+        data.token,
+        data.id,
       ],
       (error, results, fields) => {
         if (error) {
@@ -103,6 +101,26 @@ module.exports = {
       }
     );
   },
+
+  resetPassword: (data, callBack) => {
+      data.token ="";
+    pool.query(
+      `update user set password=?, token=? where id = ?`,
+      [
+        data.password,
+        data.token,
+        data.id,
+      ],
+      (error, results, fields) => {
+        if (error) {
+          callBack(error);
+        }
+        return callBack(null, results);
+      }
+    );
+  },
+
+
   deleteUser: (data, callBack) => {
     console.log(data)
     pool.query(

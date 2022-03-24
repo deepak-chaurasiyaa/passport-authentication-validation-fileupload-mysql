@@ -1,5 +1,4 @@
-const jwt = require("jsonwebtoken");
-const config = process.env
+
 const {
     create,
     getUserByUserEmail,
@@ -10,6 +9,8 @@ const {
   } = require("../models/user.model");
   const { hashSync, genSaltSync, compareSync } = require("bcrypt");
   const { sign } = require("jsonwebtoken");
+  const jwt = require("jsonwebtoken");
+const config = process.env
   var getIdByToken = (req) =>{
     let getToken = (req) =>{
         if (

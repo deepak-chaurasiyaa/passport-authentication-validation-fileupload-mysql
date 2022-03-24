@@ -65,8 +65,15 @@ module.exports = {
             login_validation:  Joi.object().keys({
                 email: Joi.string().required().email().max(80),
                 password: Joi.string().min(4).required(),
+            }),
+            email_validation: Joi.object().keys({
+              email: Joi.string().required().email().max(80),
+            }),
+            password_validation: Joi.object().keys({
+              password: Joi.string().min(4).required(),
+              confirmPassword: Joi.string(),
+              token: Joi.string()
             })
-            ,
         }
     
     

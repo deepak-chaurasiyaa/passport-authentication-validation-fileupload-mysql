@@ -3,16 +3,18 @@ const jwt = require("jsonwebtoken");
 const {getUserByUserId} = require("../../models/admin.model")
 const config = process.env;
 
+var getToken = (req) =>{
+  if (
+      req.headers.authorization &&
+      req.headers.authorization.split(" ")[0] === "Bearer"
+    ) {
+      return req.headers.authorization.split(" ")[1];
+    } 
+    return null;
+}
+
 let admAuth = (req, res, next) => {
-  let getToken = (req) =>{
-      if (
-          req.headers.authorization &&
-          req.headers.authorization.split(" ")[0] === "Bearer"
-        ) {
-          return req.headers.authorization.split(" ")[1];
-        } 
-        return null;
-  } 
+ 
   let headerToken = getToken(req)
 const token =
   req.body.token || req.query.token || req.headers["x-access-token"] || headerToken;
@@ -39,15 +41,7 @@ try {
 }
 
 let superAdmAuth = (req, res, next) => {
-  let getToken = (req) =>{
-      if (
-          req.headers.authorization &&
-          req.headers.authorization.split(" ")[0] === "Bearer"
-        ) {
-          return req.headers.authorization.split(" ")[1];
-        } 
-        return null;
-  } 
+ 
   let headerToken = getToken(req)
 const token =
   req.body.token || req.query.token || req.headers["x-access-token"] || headerToken;
@@ -76,15 +70,7 @@ try {
 
 
 let admOrSuperAdmAuth = (req, res, next) => {
-  let getToken = (req) =>{
-      if (
-          req.headers.authorization &&
-          req.headers.authorization.split(" ")[0] === "Bearer"
-        ) {
-          return req.headers.authorization.split(" ")[1];
-        } 
-        return null;
-  } 
+ 
   let headerToken = getToken(req)
 const token =
   req.body.token || req.query.token || req.headers["x-access-token"] || headerToken;
@@ -111,15 +97,7 @@ try {
 }
 
 let userAuth = (req, res, next) => {
-  let getToken = (req) =>{
-      if (
-          req.headers.authorization &&
-          req.headers.authorization.split(" ")[0] === "Bearer"
-        ) {
-          return req.headers.authorization.split(" ")[1];
-        } 
-        return null;
-  } 
+ 
   let headerToken = getToken(req)
 const token =
   req.body.token || req.query.token || req.headers["x-access-token"] || headerToken;
