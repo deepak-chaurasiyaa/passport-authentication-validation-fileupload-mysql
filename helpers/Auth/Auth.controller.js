@@ -10,56 +10,55 @@ var getToken = (req) =>{
     ) {
       return req.headers.authorization.split(" ")[1];
     } 
-    return null;
+  return null;
 }
 
 let admAuth = (req, res, next) => {
  
   let headerToken = getToken(req)
-const token =
-  req.body.token || req.query.token || req.headers["x-access-token"] || headerToken;
+  const token =
+    req.body.token || req.query.token || req.headers["x-access-token"] || headerToken;
 
 if (!token) {
 
   return res.status(403).send("A token is required for authentication");
 }
-try {
+  try {
 
-  const decoded = jwt.verify(token, config.secret_key);
-  req.user = decoded;
-  let id = decoded.id
-  if(decoded.isAdmin){
-      return next();
+    const decoded = jwt.verify(token, config.secret_key);
+    req.user = decoded;
+    let id = decoded.id
+    if(decoded.isAdmin){
+        return next();
+    }
+    else{
+        return res.status(403).send("You are not allowed to perform this action.")
+    }
+  } catch (err) {
+    return res.status(401).send("Invalid Token");
   }
-  else{
-      return res.status(403).send("You are not allowed to perform this action.")
-  }
-} catch (err) {
-  return res.status(401).send("Invalid Token");
-}
 
 }
 
 let superAdmAuth = (req, res, next) => {
  
   let headerToken = getToken(req)
-const token =
-  req.body.token || req.query.token || req.headers["x-access-token"] || headerToken;
+  const token =
+    req.body.token || req.query.token || req.headers["x-access-token"] || headerToken;
 
 if (!token) {
 
   return res.status(403).send("A token is required for authentication");
 }
 try {
-
   const decoded = jwt.verify(token, config.secret_key);
   req.user = decoded;
   let id = decoded.id
   if(decoded.isSuperAdmin){
-      return next();
+    return next();
   }
   else{
-      return res.status(403).send("You are not allowed to perform this action.")
+    return res.status(403).send("You are not allowed to perform this action.")
   }
 } catch (err) {
   return res.status(401).send("Invalid Token");

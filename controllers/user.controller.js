@@ -112,10 +112,8 @@ const config = process.env
     },
   
     getUserByUserId: (req, res) => {
-    //   const id = req.params.id;
-        let id = getIdByToken(req)
-      
-        getUserByUserId(id, (err, results) => {
+      let id = getIdByToken(req)
+      getUserByUserId(id, (err, results) => {
         if (err) {
           console.log(err);
           return;
